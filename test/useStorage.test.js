@@ -11,50 +11,52 @@ describe('useLocalStorage', () => {
     NONE: ''
   };
 
-  describe('Setup with no stored value', () => {
+  describe('Setup', () => {
     beforeEach(() => {
       window.localStorage.clear();
     });
 
-    test('SetValue is a function', () => {
+    test('setValue is a function', () => {
       const { result } = renderHook(() => useLocalStorage(KEY, VALUE.INITIAL));
-      expect(typeof result.current[1]).toBe('function')
+      expect(typeof result.current.setStoredValue).toBe('function')
     });
 
     test('Returns initial value', () => {
       const { result } = renderHook(() => useLocalStorage(KEY, VALUE.INITIAL));
-      expect(result.current[0]).toBe(VALUE.INITIAL);
+      expect(result.current.storedValue).toBe(VALUE.INITIAL);
+    });
+
+    test('Returns an empty string as default', () => {
+      const { result } = renderHook(() => useLocalStorage(KEY));
+      expect(result.current.storedValue).toBe(VALUE.NONE);
     });
 
     test('Returns stored value', () => {
       window.localStorage.setItem(KEY, JSON.stringify(VALUE.STORED));
       const { result } = renderHook(() => useLocalStorage(KEY, VALUE.INITIAL));
-      expect(result.current[0]).toMatch(VALUE.STORED);
-    });
-
-    test('When no initial value is passed, returns an empty string', () => {
-      const { result } = renderHook(() => useLocalStorage(KEY));
-      expect(result.current[0]).toBe(VALUE.NONE);
+      expect(result.current.storedValue).toBe(VALUE.STORED);
     });
   });
 
-  // test('When `setValue()` is called, the `value` updates', () => {
-  //   const { result } = renderHook(() => useLocalStorage(KEY, VALUE.INITIAL));
+  describe('Change value', () => {
+    test('Set value to changed value', () => {
+      const { result } = renderHook(() => useLocalStorage(KEY));
 
-  //   act(() => {
-  //     result.current[1](VALUE.CHANGED);
-  //   });
+      act(() => {
+        result.current.setStoredValue(VALUE.CHANGED);
+      });
 
-  //   expect(result.current[0]).toMatch(VALUE.CHANGED);
-  // });
+      expect(result.current.storedValue).toBe(VALUE.CHANGED);
+    });
 
-  // test('When `value` changes, `localStorage` is updated', () => {
-  //   const { result } = renderHook(() => useLocalStorage(KEY, VALUE.INITIAL));
+    test('localStorage value change with stored value', () => {
+      const { result } = renderHook(() => useLocalStorage(KEY));
 
-  //   act(() => {
-  //     result.current[1](VALUE.CHANGED);
-  //   });
+      act(() => {
+        result.current.setStoredValue(VALUE.CHANGED);
+      });
 
-  //   expect(localStorage.getItem(KEY)).toBe(VALUE.CHANGED);
-  // });
+      expect(JSON.parse(window.localStorage.getItem(KEY))).toBe(VALUE.CHANGED);
+    });
+  });
 });

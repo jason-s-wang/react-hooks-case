@@ -26,7 +26,7 @@ export const useStorage = (key, initialValue = '', config = {}) => {
     return tempValue;
   });
 
-  const setStorageValue = newValue => {
+  const setStoredValue = newValue => {
     try {
       // Compute next value if newValue is function
       const nextValue = newValue instanceof Function ? newValue(value) : newValue;
@@ -37,7 +37,10 @@ export const useStorage = (key, initialValue = '', config = {}) => {
     }
   };
 
-  return [value, setStorageValue];
+  return {
+    storedValue: value,
+    setStoredValue
+  };
 };
 
 export const useLocalStorage = (key, initialValue) =>
