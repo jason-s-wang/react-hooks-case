@@ -6,7 +6,7 @@ import { useState } from 'react';
  * @param {*} initialValue - any value
  * @param {Object} config - set storage config
  * @param {string} config.storage - localStorage or sessionStorage
- * @returns {Array} value and setValue
+ * @returns {Object} value, setValue and removeValue
  */
 export const useStorage = (key, initialValue = '', config = {}) => {
   const storage = config.storage === 'localStorage' ?
