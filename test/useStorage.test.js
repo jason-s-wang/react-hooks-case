@@ -5,9 +5,9 @@ import { useLocalStorage } from '../src/hooks';
 describe('useLocalStorage', () => {
   const KEY = 'key';
   const VALUE = {
-    INITIAL: 'initial value',
-    STORED: 'stored value',
-    CHANGED: 'changed value',
+    INITIAL: 'initial',
+    STORED: 'stored',
+    CHANGED: 'changed',
     NONE: ''
   };
 
@@ -18,45 +18,65 @@ describe('useLocalStorage', () => {
 
     test('setValue is a function', () => {
       const { result } = renderHook(() => useLocalStorage(KEY, VALUE.INITIAL));
-      expect(typeof result.current.setStoredValue).toBe('function')
+      expect(typeof result.current.setValue).toBe('function')
     });
 
     test('Returns initial value', () => {
       const { result } = renderHook(() => useLocalStorage(KEY, VALUE.INITIAL));
-      expect(result.current.storedValue).toBe(VALUE.INITIAL);
+      expect(result.current.value).toBe(VALUE.INITIAL);
     });
 
     test('Returns an empty string as default', () => {
       const { result } = renderHook(() => useLocalStorage(KEY));
-      expect(result.current.storedValue).toBe(VALUE.NONE);
+      expect(result.current.value).toBe(VALUE.NONE);
     });
 
     test('Returns stored value', () => {
       window.localStorage.setItem(KEY, JSON.stringify(VALUE.STORED));
       const { result } = renderHook(() => useLocalStorage(KEY, VALUE.INITIAL));
-      expect(result.current.storedValue).toBe(VALUE.STORED);
+      expect(result.current.value).toBe(VALUE.STORED);
     });
   });
 
-  describe('Change value', () => {
+  describe('Change', () => {
     test('Set value to changed value', () => {
       const { result } = renderHook(() => useLocalStorage(KEY));
 
       act(() => {
-        result.current.setStoredValue(VALUE.CHANGED);
+        result.current.setValue(VALUE.CHANGED);
       });
 
-      expect(result.current.storedValue).toBe(VALUE.CHANGED);
+      expect(result.current.value).toBe(VALUE.CHANGED);
     });
 
-    test('localStorage value change with stored value', () => {
+    test('localStorage value is set to changed after setValue', () => {
       const { result } = renderHook(() => useLocalStorage(KEY));
 
       act(() => {
-        result.current.setStoredValue(VALUE.CHANGED);
+        result.current.setValue(VALUE.CHANGED);
       });
 
       expect(JSON.parse(window.localStorage.getItem(KEY))).toBe(VALUE.CHANGED);
+    });
+
+    test('localStorage value is set to null after removeValue', () => {
+      const { result } = renderHook(() => useLocalStorage(KEY));
+
+      act(() => {
+        result.current.removeValue();
+      });
+
+      expect(JSON.parse(window.localStorage.getItem(KEY))).toBe(null);
+    });
+
+    test('value is set to null after removeValue', () => {
+      const { result } = renderHook(() => useLocalStorage(KEY));
+
+      act(() => {
+        result.current.removeValue();
+      });
+
+      expect(result.current.value).toBe(null);
     });
   });
 });

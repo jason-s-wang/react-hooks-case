@@ -22,7 +22,6 @@ export const useStorage = (key, initialValue = '', config = {}) => {
       console.error(error);
     }
 
-    // console.log(tempValue);
     return tempValue;
   });
 
@@ -37,9 +36,19 @@ export const useStorage = (key, initialValue = '', config = {}) => {
     }
   };
 
+  const removeValue = () => {
+    try {
+      storage.removeItem(key);
+      setValue(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
-    storedValue: value,
-    setStoredValue
+    value,
+    setValue: setStoredValue,
+    removeValue
   };
 };
 

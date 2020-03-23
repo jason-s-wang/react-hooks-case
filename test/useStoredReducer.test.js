@@ -50,7 +50,7 @@ describe('useStoredReducer', () => {
       const config = {
         storage: 'localStorage'
       };
-      const { result } = renderHook(() => useStoredReducer(KEY, mockReducer, INITIAL_STATE, config));
+      renderHook(() => useStoredReducer(KEY, mockReducer, INITIAL_STATE, config));
       expect(JSON.parse(window.localStorage.getItem(KEY))).toEqual(INITIAL_STATE);
     });
   });

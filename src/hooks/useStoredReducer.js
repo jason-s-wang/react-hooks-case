@@ -12,12 +12,12 @@ import { useStorage } from './useStorage';
  * @returns {Array} state and dispatch
  */
 export const useStoredReducer = (key, reducer, initialState = {}, config) => {
-  const { storedValue, setStoredValue } = useStorage(key, null, config);
-  const [state, dispatch] = useReducer(reducer, storedValue || initialState);
+  const { value, setValue } = useStorage(key, null, config);
+  const [state, dispatch] = useReducer(reducer, value || initialState);
 
   useEffect(() => {
-    setStoredValue(state);
-  }, [state, setStoredValue]);
+    setValue(state);
+  }, [state, setValue]);
 
   return [state, dispatch];
 };
