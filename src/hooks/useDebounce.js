@@ -1,13 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 
 export const useDebounce = (func, wait) => {
-  let timer = null;
+  const timer = useRef(null);
 
   const debounce = useCallback(() => {
     try {
-      clearTimeout(timer);
-      timer = window.setTimeout(() => {
+      timer.current && clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => {
         func();
       }, wait);
     } catch (error) {
