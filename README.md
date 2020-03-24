@@ -24,7 +24,7 @@ const KEY = 'key';
  */
 const { value, setValue, removeValue } = useLocalStorage(KEY, 1);
 
-setValue(2);    // set value to 2
+setValue(2);    // set both value and storage item to 2
 removeValue();  // remove value from localStorage and set value to null
 ```
 
@@ -46,4 +46,6 @@ const [state, dispatch] = useStoredReducer(
     initialState, // your initial state
     config
   );
+
+dispatch(myAction()); // Both state and storage item will be updated
 ```
