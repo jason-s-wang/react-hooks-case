@@ -1,7 +1,7 @@
 # react-hooks-case
-![version](https://img.shields.io/npm/v/react-hooks-case.svg?style=flat-square)
-![size](https://img.shields.io/bundlephobia/min/react-hooks-case.svg?style=flat-square)
-![minzippedsize](https://img.shields.io/bundlephobia/minzip/react-hooks-case.svg?style=flat-square)
+![version](https://img.shields.io/npm/v/react-hooks-case?style=flat-square)
+![size](https://img.shields.io/bundlephobia/min/react-hooks-case?style=flat-square)
+![minzippedsize](https://img.shields.io/bundlephobia/minzip/react-hooks-case?style=flat-square)
 
 ## Installation
 `$ npm install --save react-hooks-case`
