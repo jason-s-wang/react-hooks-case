@@ -1,9 +1,11 @@
 {
   "name": "react-hooks-case",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "This package includes some useful react hooks",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "transpile": "babel src -d dist",
+    "prepublishOnly": "npm run transpile",
     "test": "jest"
   },
   "keywords": [
@@ -23,10 +25,14 @@
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.1",
     "@testing-library/react-hooks": "^3.2.1",
+    "babel-cli": "^6.26.0",
     "babel-jest": "^25.1.0",
     "jest": "^25.1.0",
     "react": "^16.9.0",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
   "peerDependencies": {
     "react": "^16.9.0"
