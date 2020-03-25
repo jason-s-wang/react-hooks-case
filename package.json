@@ -1,5 +1,5 @@
 {
-  "name": "react-simple-hooks",
+  "name": "react-hooks-case",
   "version": "0.1.0",
   "description": "This package includes some useful react hooks",
   "main": "index.js",
@@ -16,9 +16,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jason-s-wang/react-simple-hooks.git"
+    "url": "https://github.com/jason-s-wang/react-hooks-case.git"
   },
-  "homepage": "https://github.com/jason-s-wang/react-simple-hooks",
+  "homepage": "https://github.com/jason-s-wang/react-hooks-case",
   "devDependencies": {
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.1",

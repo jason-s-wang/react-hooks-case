@@ -1,10 +1,10 @@
-# react-simple-hooks
-![version](https://img.shields.io/npm/v/react-simple-hooks.svg?style=flat-square)
-![size](https://img.shields.io/bundlephobia/min/react-simple-hooks.svg?style=flat-square)
-![minzippedsize](https://img.shields.io/bundlephobia/minzip/react-simple-hooks.svg?style=flat-square)
+# react-hooks-case
+![version](https://img.shields.io/npm/v/react-hooks-case.svg?style=flat-square)
+![size](https://img.shields.io/bundlephobia/min/react-hooks-case.svg?style=flat-square)
+![minzippedsize](https://img.shields.io/bundlephobia/minzip/react-hooks-case.svg?style=flat-square)
 
 ## Installation
-`$ npm install --save react-simple-hooks`
+`$ npm install --save react-hooks-case`
 
 ## Hooks Reference
 - useLocalStorage(key, initialValue)
@@ -14,7 +14,7 @@
 ## Usage
 ### useLocalStorage
 ```javascript
-import { useLocalStorage } from 'react-simple-hooks'
+import { useLocalStorage } from 'react-hooks-case'
 
 const KEY = 'key';
 
@@ -30,7 +30,7 @@ removeValue();  // remove value from localStorage and set value to null
 
 ### useStoredReducer
 ```javascript
-import { useStoredReducer } from 'react-simple-hooks'
+import { useStoredReducer } from 'react-hooks-case'
 
 const config = {
         storage: 'localStorage' // default is sessionStorage
