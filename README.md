@@ -3,6 +3,8 @@
 ![size](https://img.shields.io/bundlephobia/min/react-hooks-case?style=flat-square)
 ![minzippedsize](https://img.shields.io/bundlephobia/minzip/react-hooks-case?style=flat-square)
 
+This package includes some useful react hooks.
+
 ## Installation
 `$ npm install --save react-hooks-case`
 
@@ -10,6 +12,7 @@
 - useLocalStorage(key, initialValue)
 - useSessionStorage(key, initialValue)
 - useStoredReducer(key, reducer, initialState, config)
+- useDebounce(callback, delay)
 
 ## Usage
 ### useLocalStorage
@@ -48,4 +51,17 @@ const [state, dispatch] = useStoredReducer(
   );
 
 dispatch(myAction()); // Both state and storage item will be updated
+```
+
+### useDebounce
+```javascript
+import { useDebounce } from 'react-hooks-case'
+
+const cb = (value) => console.log(value); // Set debounce callback function
+const delay = 500;  // Set debounce delay
+
+const debounce = useDebounce(cb, delay);
+
+[1, 2, 3].forEach(debounce);  // Output 3 after 0.5s
+
 ```

@@ -4,11 +4,11 @@ import { useCallback, useRef } from 'react';
 export const useDebounce = (func, wait) => {
   const timer = useRef(null);
 
-  const debounce = useCallback(() => {
+  const debounce = useCallback((...params) => {
     try {
       timer.current && clearTimeout(timer.current);
       timer.current = window.setTimeout(() => {
-        func();
+        func(...params);
       }, wait);
     } catch (error) {
       console.error(error);

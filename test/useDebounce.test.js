@@ -3,7 +3,7 @@ import { useDebounce } from '../src/hooks';
 
 
 describe('useDebounce', () => {
-  const WAIT = 1500;
+  const WAIT = 1000;
 
   test('debounce is a function', () => {
     const mockFunc = jest.fn();
@@ -11,24 +11,36 @@ describe('useDebounce', () => {
     expect(typeof result.current).toBe('function');
   });
 
-  test('debounce will be called only once', done => {
-    let parm = 1;
-    expect.assertions(1);
+  test('debounce will be called only once', () => {
+    return new Promise(done => {
+      expect.assertions(1);
 
-    const mockFunc = jest.fn((data) => {
-      try {
-        expect(data).toBe(parm);
+      const mockFunc = jest.fn(() => {
+        expect(true).toBeTruthy();
         done();
-      } catch (error) {
-        done(error);
-      }
+      });
+
+      const { result, rerender } = renderHook(() => useDebounce(() => mockFunc(), WAIT));
+
+      [1, 2, 3].forEach(result.current);
+      rerender();
+      result.current(2);
     });
+  });
 
-    const { result, rerender } = renderHook(() => useDebounce(() => mockFunc(parm), WAIT));
+  test('debounce callback has correct params', () => {
+    return new Promise(done => {
+      let params = [1, 2];
 
-    [1, 2, 3].forEach(result.current);
-    parm = 2;
-    rerender();
-    result.current();
+      const mockFunc = jest.fn((d1, d2) => {
+        expect(d1).toBe(params[0]);
+        expect(d2).toBe(params[1]);
+        done();
+      });
+
+      const { result } = renderHook(() => useDebounce((v1, v2) => mockFunc(v1, v2), WAIT));
+
+      result.current(...params);
+    });
   });
 });
