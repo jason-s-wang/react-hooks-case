@@ -5,3 +5,4 @@ babel.config.js
 webpack.config.js
 .gitignore
 .vscode
+.eslintrc.js

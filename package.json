@@ -1,6 +1,6 @@
 {
   "name": "react-hooks-case",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "This package includes some useful react hooks",
   "main": "dist/index.js",
   "scripts": {
