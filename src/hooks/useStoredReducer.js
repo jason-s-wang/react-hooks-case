@@ -16,8 +16,25 @@ export const useStoredReducer = (key, reducer, initialState = {}, config) => {
   const [state, dispatch] = useReducer(reducer, value || initialState);
 
   useEffect(() => {
-    setValue(state);
-  }, [state, setValue]);
+    try {
+      if (config && Array.isArray(config.keys) &&
+        state && typeof state === 'object') {
+        let storedState = {};
+
+        for (let key in state) {
+          if (config.keys.includes(key)) {
+            storedState[key] = state[key];
+          }
+        }
+
+        setValue(storedState);
+      } else {
+        setValue(state);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [state, setValue, config]);
 
   return [state, dispatch];
 };

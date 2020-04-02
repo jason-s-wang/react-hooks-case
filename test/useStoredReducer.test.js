@@ -9,7 +9,7 @@ describe('useStoredReducer', () => {
   };
   const NEXT_STATE = {
     count: 1
-  }
+  };
 
   const mockReducer = jest.fn();
   mockReducer.mockReturnValue(NEXT_STATE);
@@ -52,6 +52,27 @@ describe('useStoredReducer', () => {
       };
       renderHook(() => useStoredReducer(KEY, mockReducer, INITIAL_STATE, config));
       expect(JSON.parse(window.localStorage.getItem(KEY))).toEqual(INITIAL_STATE);
+    });
+
+    test.only('Only store properties in config.keys', () => {
+      const storedState = {
+        stored1: 1,
+        stored2: {
+          test: 'test'
+        },
+        noStored: 'noStored'
+      };
+      mockReducer.mockReturnValue(storedState);
+
+      const config = {
+        keys: ['stored1', 'stored2']
+      };
+
+      renderHook(() => useStoredReducer(KEY, mockReducer, storedState, config));
+
+      const storageItem = JSON.parse(window.sessionStorage.getItem(KEY));
+
+      expect(storageItem[config.keys[0]]).toEqual(storedState.stored1);
     });
   });
 
