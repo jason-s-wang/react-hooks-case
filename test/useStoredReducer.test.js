@@ -14,11 +14,14 @@ describe('useStoredReducer', () => {
   const mockReducer = jest.fn();
   mockReducer.mockReturnValue(NEXT_STATE);
 
-  describe('Setup', () => {
-    beforeEach(() => {
-      window.sessionStorage.clear();
-    });
+  beforeEach(() => {
+    window.sessionStorage.clear();
+    window.localStorage.clear();
+  });
 
+  /*******************************************************************************************************/
+
+  describe('Setup', () => {
     test('Dispatch as array[1] is a function', () => {
       const { result } = renderHook(() => useStoredReducer(KEY, mockReducer, INITIAL_STATE));
       expect(typeof result.current[1]).toBe('function');
@@ -39,13 +42,20 @@ describe('useStoredReducer', () => {
       renderHook(() => useStoredReducer(KEY, mockReducer, INITIAL_STATE));
       expect(JSON.parse(window.sessionStorage.getItem(KEY))).toEqual(INITIAL_STATE);
     });
+
+    test('intitial value is not an object', () => {
+      const initialValue = 1;
+
+      const { result } = renderHook(() => useStoredReducer(KEY, mockReducer, initialValue));
+
+      expect(result.current[0]).toEqual(initialValue);
+      expect(JSON.parse(window.sessionStorage.getItem(KEY))).toEqual(initialValue);
+    });
   });
 
-  describe('Config', () => {
-    beforeEach(() => {
-      window.localStorage.clear();
-    });
+  /*******************************************************************************************************/
 
+  describe('Config', () => {
     test('Switch to localStorage', () => {
       const config = {
         storage: 'localStorage'
@@ -54,7 +64,7 @@ describe('useStoredReducer', () => {
       expect(JSON.parse(window.localStorage.getItem(KEY))).toEqual(INITIAL_STATE);
     });
 
-    test.only('Only store properties in config.keys', () => {
+    test('Only store properties in config.keys', () => {
       const storedState = {
         stored1: 1,
         stored2: {
@@ -62,25 +72,42 @@ describe('useStoredReducer', () => {
         },
         noStored: 'noStored'
       };
-      mockReducer.mockReturnValue(storedState);
 
-      const config = {
+      const { result } = renderHook(() => useStoredReducer(KEY, () => storedState, {}, {
         keys: ['stored1', 'stored2']
-      };
+      }));
 
-      renderHook(() => useStoredReducer(KEY, mockReducer, storedState, config));
+      act(() => {
+        result.current[1]();
+      });
 
       const storageItem = JSON.parse(window.sessionStorage.getItem(KEY));
+      expect(storageItem.stored1).toEqual(storedState.stored1);
+      expect(storageItem.noStored).toBeUndefined();
+    });
 
-      expect(storageItem[config.keys[0]]).toEqual(storedState.stored1);
+    test('Will combine stored state with initial state', () => {
+      const initialState = {
+        part1: 1,
+        part2: 2
+      };
+      const storedState = {
+        part1: 5,
+        part3: 99
+      };
+      window.sessionStorage.setItem(KEY, JSON.stringify(storedState));
+
+      const { result } = renderHook(() => useStoredReducer(KEY, mockReducer, initialState, { keys: ['part1'] }));
+
+      expect(result.current[0].part1).toEqual(storedState.part1);
+      expect(result.current[0].part2).toEqual(initialState.part2);
+      expect(result.current[0].part3).toEqual(storedState.part3);
     });
   });
 
-  describe('Dispatch action', () => {
-    beforeEach(() => {
-      window.sessionStorage.clear();
-    });
+  /*******************************************************************************************************/
 
+  describe('Dispatch action', () => {
     test('State turns into next state', () => {
       const { result } = renderHook(() => useStoredReducer(KEY, mockReducer, INITIAL_STATE));
 

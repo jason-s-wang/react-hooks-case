@@ -11,11 +11,13 @@ describe('useLocalStorage', () => {
     NONE: ''
   };
 
-  describe('Setup', () => {
-    beforeEach(() => {
-      window.localStorage.clear();
-    });
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
 
+  /*******************************************************************************************************/
+
+  describe('Setup', () => {
     test('setValue is a function', () => {
       const { result } = renderHook(() => useLocalStorage(KEY, VALUE.INITIAL));
       expect(typeof result.current.setValue).toBe('function')
@@ -38,6 +40,8 @@ describe('useLocalStorage', () => {
     });
   });
 
+  /*******************************************************************************************************/
+
   describe('Change', () => {
     test('Set value to changed value', () => {
       const { result } = renderHook(() => useLocalStorage(KEY));
@@ -47,6 +51,16 @@ describe('useLocalStorage', () => {
       });
 
       expect(result.current.value).toBe(VALUE.CHANGED);
+    });
+
+    test('Set value to computed value', () => {
+      const { result } = renderHook(() => useLocalStorage(KEY, 1));
+
+      act(() => {
+        result.current.setValue(pre => pre + 1);
+      });
+
+      expect(result.current.value).toBe(2);
     });
 
     test('localStorage value is set to changed after setValue', () => {

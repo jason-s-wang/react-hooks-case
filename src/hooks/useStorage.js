@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 
 /**
  * useStorage is a hook which is used to control localStorage or sessionStorage
@@ -9,8 +9,10 @@ import { useState } from 'react';
  * @returns {Object} value, setValue and removeValue
  */
 export const useStorage = (key, initialValue = '', config = {}) => {
-  const storage = config.storage === 'localStorage' ?
-    window.localStorage : window.sessionStorage;
+  const storage = useMemo(
+    () => config.storage === 'localStorage' ? window.localStorage : window.sessionStorage,
+    [config.storage]
+  );
 
   const [value, setValue] = useState(() => {
     let tempValue = initialValue;
@@ -25,25 +27,31 @@ export const useStorage = (key, initialValue = '', config = {}) => {
     return tempValue;
   });
 
-  const setStoredValue = newValue => {
+  const curValueRef = useRef(value);
+
+  useEffect(() => {
+    curValueRef.current = value;
+  }, [value]);
+
+  const setStoredValue = useCallback((newValue) => {
     try {
       // Compute next value if newValue is function
-      const nextValue = newValue instanceof Function ? newValue(value) : newValue;
+      const nextValue = newValue instanceof Function ? newValue(curValueRef.current) : newValue;
       setValue(nextValue);
       storage.setItem(key, JSON.stringify(nextValue));
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [key, storage]);
 
-  const removeValue = () => {
+  const removeValue = useCallback(() => {
     try {
       storage.removeItem(key);
       setValue(null);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [key, storage]);
 
   return {
     value,

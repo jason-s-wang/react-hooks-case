@@ -36,12 +36,14 @@ removeValue();  // remove value from localStorage and set value to null
 import { useStoredReducer } from 'react-hooks-case'
 
 const config = {
-        storage: 'localStorage' // default is sessionStorage
+        storage: 'localStorage' // default is sessionStorage,
+        keys: ['key1', 'key1']  // properties need to be stored. if keys is not specified, store all. 
       };
 
 /**
  * Use reducer and save state in storage
  * State could be initialState or storage state if exists
+ * Return combined state, if both storage and initial state exist and is object
  */
 const [state, dispatch] = useStoredReducer(
     'state ',     // key in storage

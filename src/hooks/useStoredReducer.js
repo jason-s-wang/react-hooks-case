@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import { useStorage } from './useStorage';
 
 
@@ -9,32 +9,50 @@ import { useStorage } from './useStorage';
  * @param {Object} initialState - same as initialState in useReducer
  * @param {Object} config - set hook config
  * @param {string} config.storage - localStorage or sessionStorage
+ * @param {[string]} config.keys - properties in keys will be stored in storage
  * @returns {Array} state and dispatch
  */
-export const useStoredReducer = (key, reducer, initialState = {}, config) => {
+export const useStoredReducer = (key, reducer, initialState = {}, config = {}) => {
   const { value, setValue } = useStorage(key, null, config);
-  const [state, dispatch] = useReducer(reducer, value || initialState);
+  const [state, dispatch] = useReducer(reducer, initialState, () => {
+    if (initialState && typeof initialState === 'object' &&
+      value && typeof value === 'object') {
+      // Combine value and initialstate
+      return Object.assign(initialState, value);
+    } else {
+      return value || initialState;
+    }
+  });
+  const configRef = useRef(config);
 
+  // Update configRef
+  useEffect(() => {
+    configRef.current = config;
+  }, [config]);
+
+  // Store state
   useEffect(() => {
     try {
-      if (config && Array.isArray(config.keys) &&
+      if (Array.isArray(configRef.current.keys) &&
         state && typeof state === 'object') {
         let storedState = {};
 
         for (let key in state) {
-          if (config.keys.includes(key)) {
+          if (configRef.current.keys.includes(key)) {
             storedState[key] = state[key];
           }
         }
 
-        setValue(storedState);
+        // Skip store if no key matched
+        Object.keys(storedState).length > 0 && setValue(storedState);
       } else {
         setValue(state);
       }
+
     } catch (error) {
       console.error(error);
     }
-  }, [state, setValue, config]);
+  }, [state, setValue]);
 
   return [state, dispatch];
 };
