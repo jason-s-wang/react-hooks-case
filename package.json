@@ -4,6 +4,7 @@
   "description": "This package includes some useful react hooks",
   "main": "dist/index.js",
   "scripts": {
+    "start": "webpack-dev-server --mode development --config webpackDevServer.config.js",
     "clean": "rimraf dist",
     "build:webpack": "webpack --mode production --config webpack.config.js",
     "build": "npm run clean && npm run build:webpack",
@@ -35,8 +36,10 @@
     "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
+    "html-webpack-plugin": "^4.0.4",
     "jest": "^25.1.0",
     "react": "^16.9.0",
+    "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
     "rimraf": "^3.0.2",
     "webpack": "^4.42.1",
