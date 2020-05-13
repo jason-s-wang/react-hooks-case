@@ -76,14 +76,14 @@ const location = useLocation();
 
 // Config and config props are optional
 const boundaryConfig = useMemo(() => ({
-  fallback: FallBack, // Fallback component when error happened
-  errorBoundary: MyErrorBoundary,  // If not defined, a default boundary will be offered
-  error,  // Extra error to track, should use reset to clear state
-  reset: () => setError(null),  // Used to clear extra error in fallback
-  snapshot: location.pathname   // Reset errorBoundary when snapshot changed
+  fallback: FallBack, // object; Fallback component when error happened
+  errorBoundary: MyErrorBoundary,  // object; Customized error boundary, could be empty
+  error,  // string; Extra error to track, should use reset to clear state
+  reset: () => setError(null),  // function; Used to clear extra error in fallback
+  snapshot: location.pathname   // any; Reset errorBoundary when snapshot changed
 }), []);
 
-// If no config passed, errorBoundary will be returned as well
+// If no config passed, a default errorBoundary will be returned as well
 const ErrorBoundary = useErrorBoundary(boundaryConfig);
 
 return (

@@ -10,7 +10,7 @@ import React, {
  * @param {Object} config
  * @param {Object} config.errorBoundary - custom error boundary
  * @param {Object} config.fallback - fallback component when error happened
- * @param {Object} config.error - extra error to track
+ * @param {string} config.error - extra error to track
  * @param {Function} config.reset - reset error extra error
  * @param {any} config.snapshot - used to reset errorBoundray if changed
  */
