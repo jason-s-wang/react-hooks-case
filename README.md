@@ -65,5 +65,29 @@ const delay = 500;  // Set debounce delay
 const debounce = useDebounce(cb, delay);
 
 [1, 2, 3].forEach(debounce);  // Output 3 after 0.5s
+```
 
+### useErrorBoundary
+```javascript
+import { useErrorBoundary } from 'react-hooks-case';
+
+const [error, setError] = useState(null);
+
+const boundaryConfig = useMemo(() => ({
+  fallback: FallBack, // Fallback component when error happened, accept error and reset
+  errorBoundary: MyErrorBoundary,  // If not defined, a default boundary will be offered
+  error,  // Extra error to track, should use reset to clear state
+  reset: () => setError(null) // Used to clear extra error in fallback
+}), []);
+
+// If no config passed, errorBoundary will be returned as well
+const ErrorBoundary = useErrorBoundary(boundaryConfig);
+
+return (
+  // Props will be passed down to fallback component by default boundary
+  // fallback can be defined here as well
+  <ErrorBoundary /*fallback={FallBack}*/ >
+    <YourPage />
+  </ErrorBoundary>
+);
 ```
