@@ -84,7 +84,7 @@ const boundaryConfig = useMemo(() => ({
 }), []);
 
 // If no config passed, a default errorBoundary will be returned as well
-const ErrorBoundary = useErrorBoundary(boundaryConfig);
+const ErrorBoundary = useErrorBoundary(boundaryConfig); // or useErrorBoundary()
 
 return (
   // Props will be passed down to fallback component by default boundary
