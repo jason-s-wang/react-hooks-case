@@ -3,9 +3,13 @@ import { useErrorBoundary } from '../../src/hooks';
 
 
 const DemoErrorBoundary = () => {
+  const [snapshot, setSnapshot] = useState(0);
+
   const boundaryConfig = useMemo(() => ({
-    fallback: FallBack
-  }), []);
+    fallback: FallBack,
+    snapshot,
+    reset: () => setSnapshot(pre => pre + 1)
+  }), [snapshot]);
   const ErrorBoundary = useErrorBoundary(boundaryConfig);
 
   return (
@@ -40,13 +44,16 @@ const DemoPage = () => {
 };
 
 const FallBack = props => {
-  const { error } = props;
+  const { error, reset } = props;
 
   return (
     <div>
       <div>
         <p>Oops! Page collapsed</p>
         <p>{error.message}</p>
+      </div>
+      <div>
+        <button onClick={() => reset()}>Reset Error</button>
       </div>
     </div>
   );

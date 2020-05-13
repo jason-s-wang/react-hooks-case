@@ -72,12 +72,15 @@ const debounce = useDebounce(cb, delay);
 import { useErrorBoundary } from 'react-hooks-case';
 
 const [error, setError] = useState(null);
+const location = useLocation();
 
+// Config and config props are optional
 const boundaryConfig = useMemo(() => ({
-  fallback: FallBack, // Fallback component when error happened, accept error and reset
+  fallback: FallBack, // Fallback component when error happened
   errorBoundary: MyErrorBoundary,  // If not defined, a default boundary will be offered
   error,  // Extra error to track, should use reset to clear state
-  reset: () => setError(null) // Used to clear extra error in fallback
+  reset: () => setError(null),  // Used to clear extra error in fallback
+  snapshot: location.pathname   // Reset errorBoundary when snapshot changed
 }), []);
 
 // If no config passed, errorBoundary will be returned as well

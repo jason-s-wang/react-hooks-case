@@ -1,5 +1,4 @@
 import React, {
-  useState,
   useEffect,
   useMemo,
   useCallback
@@ -11,11 +10,12 @@ import React, {
  * @param {Object} config
  * @param {Object} config.errorBoundary - custom error boundary
  * @param {Object} config.fallback - fallback component when error happened
- * @param {Object} config.error - error object
- * @param {Function} config.reset - reset error
+ * @param {Object} config.error - extra error to track
+ * @param {Function} config.reset - reset error extra error
+ * @param {any} config.snapshot - used to reset errorBoundray if changed
  */
 export const useErrorBoundary = (config = {}) => {
-  const { errorBoundary, fallback, error, reset } = config;
+  const { errorBoundary, fallback, error, reset, snapshot } = config;
 
   const CustomErrorBoundary = useMemo(() =>
     errorBoundary || DefaultErrorBoundary,
@@ -26,6 +26,7 @@ export const useErrorBoundary = (config = {}) => {
     <CustomErrorBoundary
       fallback={fallback}
       reset={reset}
+      snapshot={snapshot}
       {...props}
     >
       {error ? null : props.children}
@@ -33,7 +34,7 @@ export const useErrorBoundary = (config = {}) => {
         error={error}
       />
     </CustomErrorBoundary>
-  ), [error, fallback, reset]);
+  ), [error, fallback, reset, snapshot]);
 
   return ErrorBoundary;
 };
@@ -59,7 +60,7 @@ class DefaultErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError && this.props.fallback) {
-      return <this.props.fallback error={this.state.error} onReset={this.props.reset} />;
+      return <this.props.fallback error={this.state.error} {...this.props} />;
     }
 
     return this.props.children;
@@ -70,19 +71,13 @@ class DefaultErrorBoundary extends React.Component {
 
 function ErrorEmitter(props) {
   const { error } = props;
-  const [curError, setCurError] = useState(error);
-
-  // New error come
-  useEffect(() => {
-    error && setCurError(error);
-  }, [error]);
 
   // Emit error
   useEffect(() => {
-    if (curError) {
-      throw new Error(curError);
+    if (error) {
+      throw new Error(error);
     }
-  }, [curError]);
+  }, [error]);
 
   return null;
 }
