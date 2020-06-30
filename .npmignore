@@ -3,7 +3,7 @@ src
 test
 babel.config.js
 webpack.config.js
-webpackDevServer.config
+webpackDevServer.config.js
 .gitignore
 .vscode
 .eslintrc.js

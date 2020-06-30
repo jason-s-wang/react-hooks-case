@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import DemoStorage from './DemoStorage';
 import DemoDebounce from './DemoDebounce';
+import DemoThrottle from './DemoThrottle';
 import DemoReducer from './DemoReducer';
 import DemoErrorBoundary from './DemoErrorBoundary';
 
@@ -10,6 +11,7 @@ const App = () => {
   const DEMO_TYPE = {
     STORAGE: 'storage',
     DEBOUNCE: 'debounce',
+    THROTTLE: 'throttle',
     REDUCER: 'reducer',
     ERROR_BOUNDARY: 'errorBoundary'
   };
@@ -23,6 +25,7 @@ const App = () => {
           <option value={DEMO_TYPE.STORAGE}>useStorage</option>
           <option value={DEMO_TYPE.REDUCER}>useStoredReducer</option>
           <option value={DEMO_TYPE.DEBOUNCE}>useDebounce</option>
+          <option value={DEMO_TYPE.THROTTLE}>useThrottle</option>
           <option value={DEMO_TYPE.ERROR_BOUNDARY}>useErrorBoundary</option>
         </select>
       </div>
@@ -30,6 +33,7 @@ const App = () => {
         {demo === DEMO_TYPE.STORAGE && <DemoStorage />}
         {demo === DEMO_TYPE.REDUCER && <DemoReducer />}
         {demo === DEMO_TYPE.DEBOUNCE && <DemoDebounce />}
+        {demo === DEMO_TYPE.THROTTLE && <DemoThrottle />}
         {demo === DEMO_TYPE.ERROR_BOUNDARY && <DemoErrorBoundary />}
       </div>
     </div>

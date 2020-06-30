@@ -13,6 +13,8 @@ This package includes some useful react hooks.
 - useSessionStorage(key, initialValue)
 - useStoredReducer(key, reducer, initialState, config)
 - useDebounce(callback, delay)
+- useThrottle(callback, duration)
+- useErrorBoundary(config)
 
 ## Usage
 ### useLocalStorage
@@ -65,6 +67,19 @@ const delay = 500;  // Set debounce delay
 const debounce = useDebounce(cb, delay);
 
 [1, 2, 3].forEach(debounce);  // Output 3 after 0.5s
+```
+
+### useThrottle
+```javascript
+import { useThrottle } from 'react-hooks-case'
+
+const cb = v => v;
+const duration = 500;  // Set throttle duration
+
+const throttle = useThrottle(value => cb(value), duration);
+
+console.log(throttle(1)); // cb is called and output 1
+console.log(throttle(2)); // cb is not called and output null
 ```
 
 ### useErrorBoundary

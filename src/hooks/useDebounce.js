@@ -1,6 +1,11 @@
 import { useCallback, useRef } from 'react';
 
 
+/**
+ * Generate debounced function
+ * @param {function} func function to be debounced
+ * @param {number} wait debounce wait time
+ */
 export const useDebounce = (func, wait) => {
   const timer = useRef(null);
 
